@@ -397,7 +397,7 @@ public class Pnt implements Serializable
 	 * @param simplex
 	 *            an array of Pnts representing a simplex
 	 * @return an array of signs showing relation between this Pnt and simplex
-	 * @throws IllegalArgumentExcpetion
+	 * @throws IllegalArgumentException
 	 *             if the simplex is degenerate
 	 */
 	public int[] relation(Pnt[] simplex)
