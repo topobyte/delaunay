@@ -178,19 +178,22 @@ public class Triangle extends ArraySet<Pnt>
 	@Override
 	public Iterator<Pnt> iterator()
 	{
+		final Iterator<Pnt> it = super.iterator();
 		return new Iterator<Pnt>() {
-			private Iterator<Pnt> it = Triangle.super.iterator();
 
+			@Override
 			public boolean hasNext()
 			{
 				return it.hasNext();
 			}
 
+			@Override
 			public Pnt next()
 			{
 				return it.next();
 			}
 
+			@Override
 			public void remove()
 			{
 				throw new UnsupportedOperationException();
