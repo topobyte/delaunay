@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <name>Delaunay / Voronoi</name>
+  <description>A Delaunay Triangulation / Voronoi Diagram library</description>
+  <url>https://github.com/topobyte/delaunay</url>
+</project>
