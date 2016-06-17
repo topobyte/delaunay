@@ -40,15 +40,21 @@
 
 package de.topobyte.paulchew.delaunay;
 
+import gnu.trove.procedure.TObjectProcedure;
+
 import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+
+import de.topobyte.jsi.GenericRTree;
 
 /**
  * A 2D Delaunay Triangulation (DT) with incremental site insertion.
@@ -76,6 +82,11 @@ public class Triangulation extends AbstractSet<Triangle> implements
 
 	private static final long serialVersionUID = -3437333122694986680L;
 
+	Map<Integer, Triangle> triangles = new HashMap<>();
+	GenericRTree<Triangle> spidx = new GenericRTree<>();
+
+	private Triangle initialTriangle;
+
 	private Triangle mostRecent = null; // Most recently "active" triangle
 	private Graph<Triangle> triGraph; // Holds triangles for navigation
 
@@ -87,9 +98,21 @@ public class Triangulation extends AbstractSet<Triangle> implements
 	 */
 	public Triangulation(Triangle triangle)
 	{
+		initialTriangle = triangle;
 		triGraph = new Graph<>();
 		triGraph.add(triangle);
 		mostRecent = triangle;
+
+		spidx.add(DelaunayUtil.triangleBox(triangle), triangle);
+		triangles.put(triangle.hashCode(), triangle);
+	}
+
+	/**
+	 * @return the triangle this triangulation has been began with.
+	 */
+	public Triangle getInitialTriangle()
+	{
+		return initialTriangle;
 	}
 
 	/* The following two methods are required by AbstractSet */
@@ -181,13 +204,14 @@ public class Triangulation extends AbstractSet<Triangle> implements
 			throw new IllegalArgumentException("Site not in triangle");
 		List<Triangle> list = new ArrayList<>();
 		Triangle start = triangle;
+		Triangle current = triangle;
 		Pnt guide = triangle.getVertexButNot(site); // Affects cw or ccw
 		while (true) {
-			list.add(triangle);
-			Triangle previous = triangle;
-			triangle = this.neighborOpposite(guide, triangle); // Next triangle
+			list.add(current);
+			Triangle previous = current;
+			current = this.neighborOpposite(guide, current); // Next triangle
 			guide = previous.getVertexButNot(site, guide); // Update guide
-			if (triangle == start)
+			if (current == start)
 				break;
 		}
 		return list;
@@ -200,34 +224,43 @@ public class Triangulation extends AbstractSet<Triangle> implements
 	 *            the point to locate
 	 * @return the triangle that holds point; null if no such triangle
 	 */
-	public Triangle locate(Pnt point)
+	public Triangle locate(final Pnt point)
 	{
 		Triangle triangle = mostRecent;
 		if (!this.contains(triangle))
 			triangle = null;
 
-		// Try a directed walk (this works fine in 2D, but can fail in 3D)
-		Set<Triangle> visited = new HashSet<>();
-		while (triangle != null) {
-			if (visited.contains(triangle)) { // This should never happen
-				System.out.println("Warning: Caught in a locate loop");
-				break;
+		final Set<Triangle> founds = new HashSet<>();
+		spidx.intersects(DelaunayUtil.pntBox(point),
+				new TObjectProcedure<Triangle>() {
+
+					@Override
+					public boolean execute(Triangle striangle)
+					{
+						// check for containment
+						if (point.isOutside(striangle.toArray(new Pnt[0])) == null) {
+							founds.add(striangle);
+						}
+						return true;
+					}
+				});
+		if (founds.size() > 1) {
+			System.out.println(String.format("size is: %d of point %s",
+					founds.size(), point.stringRepresentation()));
+			for (Triangle t : founds) {
+				System.out.println(t.stringRepresentation());
 			}
-			visited.add(triangle);
-			// Corner opposite point
-			Pnt corner = point.isOutside(triangle.toArray(new Pnt[0]));
-			if (corner == null)
-				return triangle;
-			triangle = this.neighborOpposite(corner, triangle);
 		}
-		// No luck; try brute force
-		System.out.println("Warning: Checking all triangles for " + point);
-		for (Triangle tri : this) {
-			if (point.isOutside(tri.toArray(new Pnt[0])) == null)
-				return tri;
+
+		if (founds.size() == 1) {
+			return founds.iterator().next();
 		}
-		// No such triangle
-		System.out.println("Warning: No triangle holds " + point);
+		for (Triangle t : founds) {
+			Set<Triangle> cavity = getCavity(point, t);
+			if (cavity.size() != 0)
+				return t;
+		}
+
 		return null;
 	}
 
@@ -247,8 +280,10 @@ public class Triangulation extends AbstractSet<Triangle> implements
 		// Locate containing triangle
 		Triangle triangle = locate(site);
 		// Give up if no containing triangle or if site is already in DT
-		if (triangle == null)
+		if (triangle == null) {
+			System.out.println(site.stringRepresentation());
 			throw new IllegalArgumentException("No containing triangle");
+		}
 		if (triangle.contains(site))
 			return;
 
@@ -274,12 +309,12 @@ public class Triangulation extends AbstractSet<Triangle> implements
 		toBeChecked.add(triangle);
 		marked.add(triangle);
 		while (!toBeChecked.isEmpty()) {
-			triangle = toBeChecked.remove();
-			if (site.vsCircumcircle(triangle.toArray(new Pnt[0])) == 1)
+			Triangle current = toBeChecked.remove();
+			if (site.vsCircumcircle(current.toArray(new Pnt[0])) == 1)
 				continue; // Site outside triangle => triangle not in cavity
-			encroached.add(triangle);
+			encroached.add(current);
 			// Check the neighbors
-			for (Triangle neighbor : triGraph.neighbors(triangle)) {
+			for (Triangle neighbor : triGraph.neighbors(current)) {
 				if (marked.contains(neighbor))
 					continue;
 				marked.add(neighbor);
@@ -305,6 +340,7 @@ public class Triangulation extends AbstractSet<Triangle> implements
 		Set<Triangle> theTriangles = new HashSet<>();
 
 		// Find boundary facets and adjacent triangles
+		// System.out.println("cavity size: " + cavity.size());
 		for (Triangle triangle : cavity) {
 			theTriangles.addAll(neighbors(triangle));
 			for (Pnt vertex : triangle) {
@@ -318,15 +354,23 @@ public class Triangulation extends AbstractSet<Triangle> implements
 		theTriangles.removeAll(cavity); // Adj triangles only
 
 		// Remove the cavity triangles from the triangulation
-		for (Triangle triangle : cavity)
+		for (Triangle triangle : cavity) {
 			triGraph.remove(triangle);
+			triangles.remove(triangle.hashCode());
+			spidx.delete(DelaunayUtil.triangleBox(triangle), triangle);
+		}
 
 		// Build each new triangle and add it to the triangulation
 		Set<Triangle> newTriangles = new HashSet<>();
+		if (boundary.size() == 0) {
+			System.out.println("no boundary facets found");
+		}
 		for (Set<Pnt> vertices : boundary) {
 			vertices.add(site);
 			Triangle tri = new Triangle(vertices);
 			triGraph.add(tri);
+			triangles.put(tri.hashCode(), tri);
+			spidx.add(DelaunayUtil.triangleBox(tri), tri);
 			newTriangles.add(tri);
 		}
 
@@ -339,6 +383,16 @@ public class Triangulation extends AbstractSet<Triangle> implements
 
 		// Return one of the new triangles
 		return newTriangles.iterator().next();
+	}
+
+	/**
+	 * Get the triangles
+	 *
+	 * @return the triangles of the triangulation
+	 */
+	public Map<Integer, Triangle> getTriangles()
+	{
+		return triangles;
 	}
 
 }

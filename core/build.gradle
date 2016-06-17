@@ -1,4 +1,5 @@
 dependencies {
+    compile 'de.topobyte:jsi:1.1.0'
 }
 
 uploadArchives {
