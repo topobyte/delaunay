@@ -265,7 +265,7 @@ class DelaunayPanel extends JPanel {
                 new Pnt( initialSize, -initialSize),
                 new Pnt(           0,  initialSize));
         dt = new Triangulation(initialTriangle);
-        colorTable = new HashMap<Object, Color>();
+        colorTable = new HashMap<>();
     }
 
     /**
@@ -402,7 +402,7 @@ class DelaunayPanel extends JPanel {
      */
     public void drawAllVoronoi (boolean withFill, boolean withSites) {
         // Keep track of sites done; no drawing for initial triangles sites
-        HashSet<Pnt> done = new HashSet<Pnt>(initialTriangle);
+        HashSet<Pnt> done = new HashSet<>(initialTriangle);
         for (Triangle triangle : dt)
             for (Pnt site: triangle) {
                 if (done.contains(site)) continue;

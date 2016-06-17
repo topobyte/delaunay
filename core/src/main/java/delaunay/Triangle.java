@@ -125,7 +125,7 @@ class Triangle extends ArraySet<Pnt> {
      * @throws IllegalArgumentException if the vertex is not in triangle
      */
     public ArraySet<Pnt> facetOpposite (Pnt vertex) {
-        ArraySet<Pnt> facet = new ArraySet<Pnt>(this);
+        ArraySet<Pnt> facet = new ArraySet<>(this);
         if (!facet.remove(vertex))
             throw new IllegalArgumentException("Vertex not in triangle");
         return facet;

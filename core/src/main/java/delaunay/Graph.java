@@ -57,7 +57,7 @@ import java.util.Set;
 public class Graph<N> {
 
     private Map<N, Set<N>> theNeighbors =    // Node -> adjacent nodes
-        new HashMap<N, Set<N>>();
+        new HashMap<>();
     private Set<N> theNodeSet =              // Set view of all nodes
         Collections.unmodifiableSet(theNeighbors.keySet());
 

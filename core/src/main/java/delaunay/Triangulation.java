@@ -78,7 +78,7 @@ public class Triangulation extends AbstractSet<Triangle> {
      * @param triangle the initial triangle
      */
     public Triangulation (Triangle triangle) {
-        triGraph = new Graph<Triangle>();
+        triGraph = new Graph<>();
         triGraph.add(triangle);
         mostRecent = triangle;
     }
@@ -144,7 +144,7 @@ public class Triangulation extends AbstractSet<Triangle> {
     public List<Triangle> surroundingTriangles (Pnt site, Triangle triangle) {
         if (!triangle.contains(site))
             throw new IllegalArgumentException("Site not in triangle");
-        List<Triangle> list = new ArrayList<Triangle>();
+        List<Triangle> list = new ArrayList<>();
         Triangle start = triangle;
         Pnt guide = triangle.getVertexButNot(site);        // Affects cw or ccw
         while (true) {
@@ -167,7 +167,7 @@ public class Triangulation extends AbstractSet<Triangle> {
         if (!this.contains(triangle)) triangle = null;
 
         // Try a directed walk (this works fine in 2D, but can fail in 3D)
-        Set<Triangle> visited = new HashSet<Triangle>();
+        Set<Triangle> visited = new HashSet<>();
         while (triangle != null) {
             if (visited.contains(triangle)) { // This should never happen
                 System.out.println("Warning: Caught in a locate loop");
@@ -217,9 +217,9 @@ public class Triangulation extends AbstractSet<Triangle> {
      * @return set of all triangles that have site in their circumcircle
      */
     private Set<Triangle> getCavity (Pnt site, Triangle triangle) {
-        Set<Triangle> encroached = new HashSet<Triangle>();
-        Queue<Triangle> toBeChecked = new LinkedList<Triangle>();
-        Set<Triangle> marked = new HashSet<Triangle>();
+        Set<Triangle> encroached = new HashSet<>();
+        Queue<Triangle> toBeChecked = new LinkedList<>();
+        Set<Triangle> marked = new HashSet<>();
         toBeChecked.add(triangle);
         marked.add(triangle);
         while (!toBeChecked.isEmpty()) {
@@ -245,8 +245,8 @@ public class Triangulation extends AbstractSet<Triangle> {
      * @return one of the new triangles
      */
     private Triangle update (Pnt site, Set<Triangle> cavity) {
-        Set<Set<Pnt>> boundary = new HashSet<Set<Pnt>>();
-        Set<Triangle> theTriangles = new HashSet<Triangle>();
+        Set<Set<Pnt>> boundary = new HashSet<>();
+        Set<Triangle> theTriangles = new HashSet<>();
 
         // Find boundary facets and adjacent triangles
         for (Triangle triangle: cavity) {
@@ -263,7 +263,7 @@ public class Triangulation extends AbstractSet<Triangle> {
         for (Triangle triangle: cavity) triGraph.remove(triangle);
 
         // Build each new triangle and add it to the triangulation
-        Set<Triangle> newTriangles = new HashSet<Triangle>();
+        Set<Triangle> newTriangles = new HashSet<>();
         for (Set<Pnt> vertices: boundary) {
             vertices.add(site);
             Triangle tri = new Triangle(vertices);

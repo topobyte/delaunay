@@ -70,7 +70,7 @@ public class ArraySet<E> extends AbstractSet<E> {
      * @param initialCapacity the initial capacity
      */
     public ArraySet (int initialCapacity) {
-        items  = new ArrayList<E>(initialCapacity);
+        items  = new ArrayList<>(initialCapacity);
     }
 
     /**
@@ -79,7 +79,7 @@ public class ArraySet<E> extends AbstractSet<E> {
      * @param collection the source for the items of the small set
      */
     public ArraySet (Collection<? extends E> collection) {
-        items = new ArrayList<E>(collection.size());
+        items = new ArrayList<>(collection.size());
         for (E item: collection)
             if (!items.contains(item)) items.add(item);
     }
