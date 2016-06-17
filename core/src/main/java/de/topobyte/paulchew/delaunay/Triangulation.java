@@ -38,7 +38,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package delaunay;
+package de.topobyte.paulchew.delaunay;
 
 import java.util.AbstractSet;
 import java.util.ArrayList;
@@ -348,5 +348,5 @@ public class Triangulation extends AbstractSet<Triangle>
 		Triangle.moreInfo = true;
 		System.out.println("Triangles: " + dt.triGraph.nodeSet());
 	}
-	
+
 }

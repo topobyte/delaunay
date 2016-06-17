@@ -38,7 +38,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package delaunay;
+package de.topobyte.paulchew.delaunay;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -49,6 +49,10 @@ import java.util.Map;
 import java.util.Random;
 
 import javax.swing.*;
+
+import de.topobyte.paulchew.delaunay.Pnt;
+import de.topobyte.paulchew.delaunay.Triangle;
+import de.topobyte.paulchew.delaunay.Triangulation;
 
 /**
  * The Delauany applet.

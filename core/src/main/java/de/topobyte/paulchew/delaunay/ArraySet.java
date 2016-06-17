@@ -38,7 +38,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package delaunay;
+package de.topobyte.paulchew.delaunay;
 
 import java.util.AbstractSet;
 import java.util.ArrayList;

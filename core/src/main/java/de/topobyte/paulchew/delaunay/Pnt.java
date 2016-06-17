@@ -38,7 +38,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package delaunay;
+package de.topobyte.paulchew.delaunay;
 
 /**
  * Points in Euclidean space, implemented as double[].
@@ -578,5 +578,5 @@ public class Pnt
 		System.out.println("Circumcenter of " + toString(vs) + " is "
 				+ circumcenter(vs));
 	}
-	
+
 }
