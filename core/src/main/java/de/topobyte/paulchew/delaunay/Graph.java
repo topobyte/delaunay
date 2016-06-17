@@ -43,6 +43,7 @@ package de.topobyte.paulchew.delaunay;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -74,7 +75,7 @@ public class Graph<N> implements Serializable
 	{
 		if (theNeighbors.containsKey(node))
 			return;
-		theNeighbors.put(node, new ArraySet<N>());
+		theNeighbors.put(node, new HashSet<N>());
 	}
 
 	/**
