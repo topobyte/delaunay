@@ -1,5 +1,3 @@
-package delaunay;
-
 /*
  * Copyright (c) 2005, 2007 by L. Paul Chew.
  *
@@ -19,6 +17,8 @@ package delaunay;
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
+package delaunay;
 
 import java.awt.*;
 import java.awt.event.*;
