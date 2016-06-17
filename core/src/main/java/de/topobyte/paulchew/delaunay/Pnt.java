@@ -550,4 +550,9 @@ public class Pnt implements Serializable
 		return new Pnt(result);
 	}
 
+	String stringRepresentation()
+	{
+		return String.format("%f %f", coordinates[0], coordinates[1]);
+	}
+
 }

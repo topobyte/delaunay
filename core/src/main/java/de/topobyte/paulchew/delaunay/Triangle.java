@@ -212,4 +212,14 @@ public class Triangle extends ArraySet<Pnt>
 		return (this == o);
 	}
 
+	String stringRepresentation()
+	{
+		StringBuilder strb = new StringBuilder();
+		for (Pnt p : this) {
+			String s = String.format("%.4f,%.4f ", p.coord(0), p.coord(1));
+			strb.append(s);
+		}
+		return strb.toString();
+	}
+
 }
