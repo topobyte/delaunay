@@ -40,6 +40,8 @@
 
 package de.topobyte.paulchew.delaunay;
 
+import java.io.Serializable;
+
 /**
  * Points in Euclidean space, implemented as double[].
  *
@@ -53,8 +55,10 @@ package de.topobyte.paulchew.delaunay;
  *
  *         Modified Novemeber 2007. Minor clean up.
  */
-public class Pnt
+public class Pnt implements Serializable
 {
+
+	private static final long serialVersionUID = 7383817709794723806L;
 
 	private double[] coordinates; // The point's coordinates
 

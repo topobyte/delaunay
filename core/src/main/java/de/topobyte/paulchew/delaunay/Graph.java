@@ -40,6 +40,7 @@
 
 package de.topobyte.paulchew.delaunay;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,8 +54,10 @@ import java.util.Set;
  *         Created November, December 2007. For use in Delaunay/Voronoi code.
  *
  */
-public class Graph<N>
+public class Graph<N> implements Serializable
 {
+
+	private static final long serialVersionUID = 1593619689687555090L;
 
 	private Map<N, Set<N>> theNeighbors = // Node -> adjacent nodes
 	new HashMap<>();

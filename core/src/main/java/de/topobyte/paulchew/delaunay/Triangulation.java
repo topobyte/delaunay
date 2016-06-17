@@ -40,6 +40,7 @@
 
 package de.topobyte.paulchew.delaunay;
 
+import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -69,8 +70,11 @@ import java.util.Set;
  *         Voronoi cell.
  *
  */
-public class Triangulation extends AbstractSet<Triangle>
+public class Triangulation extends AbstractSet<Triangle> implements
+		Serializable
 {
+
+	private static final long serialVersionUID = -3437333122694986680L;
 
 	private Triangle mostRecent = null; // Most recently "active" triangle
 	private Graph<Triangle> triGraph; // Holds triangles for navigation

@@ -40,6 +40,7 @@
 
 package de.topobyte.paulchew.delaunay;
 
+import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,8 +55,10 @@ import java.util.Iterator;
  *         Created December 2007. For use with Voronoi/Delaunay applet.
  *
  */
-public class ArraySet<E> extends AbstractSet<E>
+public class ArraySet<E> extends AbstractSet<E> implements Serializable
 {
+
+	private static final long serialVersionUID = -5570265660026562468L;
 
 	private ArrayList<E> items; // Items of the set
 

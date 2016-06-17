@@ -61,8 +61,10 @@ import java.util.NoSuchElementException;
  *         triangle.
  *
  */
-class Triangle extends ArraySet<Pnt>
+public class Triangle extends ArraySet<Pnt>
 {
+
+	private static final long serialVersionUID = -655708935104319539L;
 
 	private int idNumber; // The id number
 	private Pnt circumcenter = null; // The triangle's circumcenter
