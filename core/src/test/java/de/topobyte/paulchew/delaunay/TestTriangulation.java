@@ -51,11 +51,11 @@ public class TestTriangulation
 		Triangle tri = new Triangle(new Pnt(-10, 10), new Pnt(10, 10), new Pnt(
 				0, -10));
 		System.out.println("Triangle created: " + tri);
-		Triangulation dt = new Triangulation(tri);
+		Triangulation<Void> dt = new Triangulation<>(tri);
 		System.out.println("DelaunayTriangulation created: " + dt);
-		dt.delaunayPlace(new Pnt(0, 0));
-		dt.delaunayPlace(new Pnt(1, 0));
-		dt.delaunayPlace(new Pnt(0, 1));
+		dt.delaunayPlace(new Pnt(0, 0), null);
+		dt.delaunayPlace(new Pnt(1, 0), null);
+		dt.delaunayPlace(new Pnt(0, 1), null);
 		System.out.println("After adding 3 points, we have a " + dt);
 		Triangle.moreInfo = true;
 		System.out.println("Triangles: " + dt.getGraph().nodeSet());

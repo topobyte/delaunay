@@ -278,7 +278,7 @@ class DelaunayPanel extends JPanel
 	public static int pointRadius = 3;
 
 	private DelaunayAp controller; // Controller for DT
-	private Triangulation dt; // Delaunay triangulation
+	private Triangulation<Void> dt; // Delaunay triangulation
 	private Map<Object, Color> colorTable; // Remembers colors for display
 	private Triangle initialTriangle; // Initial triangle
 	private static int initialSize = 10000; // Size of initial triangle
@@ -293,7 +293,7 @@ class DelaunayPanel extends JPanel
 		this.controller = controller;
 		initialTriangle = new Triangle(new Pnt(-initialSize, -initialSize),
 				new Pnt(initialSize, -initialSize), new Pnt(0, initialSize));
-		dt = new Triangulation(initialTriangle);
+		dt = new Triangulation<>(initialTriangle);
 		colorTable = new HashMap<>();
 	}
 
@@ -305,7 +305,7 @@ class DelaunayPanel extends JPanel
 	 */
 	public void addSite(Pnt point)
 	{
-		dt.delaunayPlace(point);
+		dt.delaunayPlace(point, null);
 	}
 
 	/**
@@ -313,7 +313,7 @@ class DelaunayPanel extends JPanel
 	 */
 	public void clear()
 	{
-		dt = new Triangulation(initialTriangle);
+		dt = new Triangulation<>(initialTriangle);
 	}
 
 	/**

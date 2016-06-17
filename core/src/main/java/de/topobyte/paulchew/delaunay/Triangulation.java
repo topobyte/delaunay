@@ -76,7 +76,7 @@ import de.topobyte.jsi.GenericRTree;
  *         Voronoi cell.
  *
  */
-public class Triangulation extends AbstractSet<Triangle> implements
+public class Triangulation<T> extends AbstractSet<Triangle> implements
 		Serializable
 {
 
@@ -85,6 +85,7 @@ public class Triangulation extends AbstractSet<Triangle> implements
 	Map<Integer, Triangle> triangles = new HashMap<>();
 	GenericRTree<Triangle> spidx = new GenericRTree<>();
 
+	private Map<Pnt, T> pointToData;
 	private Triangle initialTriangle;
 
 	private Triangle mostRecent = null; // Most recently "active" triangle
@@ -100,6 +101,7 @@ public class Triangulation extends AbstractSet<Triangle> implements
 	{
 		initialTriangle = triangle;
 		triGraph = new Graph<>();
+		pointToData = new HashMap<>();
 		triGraph.add(triangle);
 		mostRecent = triangle;
 
@@ -270,10 +272,12 @@ public class Triangulation extends AbstractSet<Triangle> implements
 	 * 
 	 * @param site
 	 *            the new Pnt
+	 * @param data
+	 *            the data to associate with this site.
 	 * @throws IllegalArgumentException
 	 *             if site does not lie in any triangle
 	 */
-	public void delaunayPlace(Pnt site)
+	public void delaunayPlace(Pnt site, T data)
 	{
 		// Uses straightforward scheme rather than best asymptotic time
 
@@ -290,6 +294,8 @@ public class Triangulation extends AbstractSet<Triangle> implements
 		// Determine the cavity and update the triangulation
 		Set<Triangle> cavity = getCavity(site, triangle);
 		mostRecent = update(site, cavity);
+
+		this.pointToData.put(site, data);
 	}
 
 	/**
@@ -386,8 +392,16 @@ public class Triangulation extends AbstractSet<Triangle> implements
 	}
 
 	/**
+	 * @return the set of points and their associated objects.
+	 */
+	public Map<Pnt, T> getData()
+	{
+		return pointToData;
+	}
+
+	/**
 	 * Get the triangles
-	 *
+	 * 
 	 * @return the triangles of the triangulation
 	 */
 	public Map<Integer, Triangle> getTriangles()
