@@ -120,6 +120,7 @@ public class DelaunayAp extends javax.swing.JApplet implements Runnable,
 	 * Initialize the applet. As recommended, the actual use of Swing components
 	 * takes place in the event-dispatching thread.
 	 */
+	@Override
 	public void init()
 	{
 		try {
@@ -133,6 +134,7 @@ public class DelaunayAp extends javax.swing.JApplet implements Runnable,
 	 * Set up the applet's GUI. As recommended, the init method executes this in
 	 * the event-dispatching thread.
 	 */
+	@Override
 	public void run()
 	{
 		setLayout(new BorderLayout());
@@ -179,6 +181,7 @@ public class DelaunayAp extends javax.swing.JApplet implements Runnable,
 	/**
 	 * A button has been pressed; redraw the picture.
 	 */
+	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		if (debug)
@@ -191,6 +194,7 @@ public class DelaunayAp extends javax.swing.JApplet implements Runnable,
 	/**
 	 * If entering a mouse-entry switch then redraw the picture.
 	 */
+	@Override
 	public void mouseEntered(MouseEvent e)
 	{
 		currentSwitch = e.getComponent();
@@ -203,6 +207,7 @@ public class DelaunayAp extends javax.swing.JApplet implements Runnable,
 	/**
 	 * If exiting a mouse-entry switch then redraw the picture.
 	 */
+	@Override
 	public void mouseExited(MouseEvent e)
 	{
 		currentSwitch = null;
@@ -213,6 +218,7 @@ public class DelaunayAp extends javax.swing.JApplet implements Runnable,
 	/**
 	 * If mouse has been pressed inside the delaunayPanel then add a new site.
 	 */
+	@Override
 	public void mousePressed(MouseEvent e)
 	{
 		if (e.getSource() != delaunayPanel)
@@ -227,10 +233,12 @@ public class DelaunayAp extends javax.swing.JApplet implements Runnable,
 	/**
 	 * Not used, but needed for MouseListener.
 	 */
+	@Override
 	public void mouseReleased(MouseEvent e)
 	{
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent e)
 	{
 	}
@@ -417,6 +425,7 @@ class DelaunayPanel extends JPanel
 	 * @param g
 	 *            the Graphics context
 	 */
+	@Override
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
