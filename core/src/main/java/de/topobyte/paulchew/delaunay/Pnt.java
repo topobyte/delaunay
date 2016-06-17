@@ -117,6 +117,8 @@ public class Pnt implements Serializable
 	/* Pnts as vectors */
 
 	/**
+	 * @param i
+	 *            the index of the coordinate.
 	 * @return the specified coordinate of this Pnt
 	 * @throws ArrayIndexOutOfBoundsException
 	 *             for bad coordinate
