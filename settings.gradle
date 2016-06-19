@@ -1,4 +1,3 @@
-rootProject.name = pName
 include 'core', 'tools'
 project(':core').name = 'delaunay'
 project(':tools').name = 'delaunay-tools'
