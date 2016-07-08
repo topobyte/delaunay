@@ -33,8 +33,7 @@ import de.topobyte.jts.utils.JtsHelper;
 import de.topobyte.jts.utils.PolygonHelper;
 
 /**
- * Several methods that are provided for for speeding up the generation of a
- * delaunay triangulation.
+ * Several utility methods that are related to Voronoi Diagrams.
  * 
  * @author Sebastian Kuerten (sebastian@topobyte.de)
  */
