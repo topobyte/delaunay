@@ -19,6 +19,7 @@ package de.topobyte.paulchew.delaunay;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Set;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -96,6 +97,16 @@ public class VoronoiDiagram<T> implements Serializable
 	}
 
 	/**
+	 * Get the underlying Delaunay Triangulation used for building this diagram.
+	 * 
+	 * @return the Delaunay Triangulation.
+	 */
+	public Triangulation<T> getTriangulation()
+	{
+		return t;
+	}
+
+	/**
 	 * Retrieve a mapping from inserted objects to the polygons of the Voronoi
 	 * Diagram.
 	 * 
@@ -104,6 +115,17 @@ public class VoronoiDiagram<T> implements Serializable
 	public Map<T, Geometry> getPolygons()
 	{
 		return VoronoiUtil.getVoronoiCells(t);
+	}
+
+	/**
+	 * Retrieve a graph that represents the neighbor relationship of the Voronoi
+	 * Cells.
+	 * 
+	 * @return a graph mapping sites to sites.
+	 */
+	public Map<Pnt, Set<Pnt>> getSiteGraph()
+	{
+		return VoronoiUtil.createSiteGraph(t);
 	}
 
 }
