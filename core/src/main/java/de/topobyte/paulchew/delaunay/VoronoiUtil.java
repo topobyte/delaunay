@@ -52,8 +52,9 @@ public class VoronoiUtil
 		Map<T, Geometry> map = new HashMap<>();
 		for (Triangle triangle : t) {
 			for (Pnt site : triangle) {
-				if (done.contains(site))
+				if (done.contains(site)) {
 					continue;
+				}
 				done.add(site);
 
 				T thing = t.getData().get(site);

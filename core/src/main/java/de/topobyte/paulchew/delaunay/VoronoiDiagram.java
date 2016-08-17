@@ -18,20 +18,9 @@
 package de.topobyte.paulchew.delaunay;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
-
-import de.topobyte.jts.utils.JtsHelper;
-import de.topobyte.jts.utils.PolygonHelper;
 
 /**
  * This is a convenience wrapper for generating Voronoi Diagrams using the
@@ -114,35 +103,7 @@ public class VoronoiDiagram<T> implements Serializable
 	 */
 	public Map<T, Geometry> getPolygons()
 	{
-		Set<Pnt> done = new HashSet<>(t.getInitialTriangle());
-		GeometryFactory factory = new GeometryFactory();
-		Map<T, Geometry> map = new HashMap<>();
-		for (Triangle triangle : t) {
-			for (Pnt site : triangle) {
-				if (done.contains(site)) {
-					continue;
-				}
-				done.add(site);
-
-				T thing = t.getData().get(site);
-				List<Triangle> list = t.surroundingTriangles(site, triangle);
-				List<Double> xs = new ArrayList<>(list.size());
-				List<Double> ys = new ArrayList<>(list.size());
-				Pnt[] vertices = new Pnt[list.size()];
-				int i = 0;
-				for (Triangle tri : list) {
-					Pnt ccenter = tri.getCircumcenter();
-					vertices[i++] = ccenter;
-					xs.add(ccenter.coord(0));
-					ys.add(ccenter.coord(1));
-				}
-				LinearRing ring = JtsHelper.toLinearRing(xs, ys, false);
-				Polygon polygon = PolygonHelper.polygonFromLinearRing(ring,
-						factory);
-				map.put(thing, polygon);
-			}
-		}
-		return map;
+		return VoronoiUtil.getVoronoiCells(t);
 	}
 
 }
