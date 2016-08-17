@@ -29,6 +29,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Polygon;
 
+import de.topobyte.adt.graph.UndirectedGraph;
 import de.topobyte.jts.utils.JtsHelper;
 import de.topobyte.jts.utils.PolygonHelper;
 
@@ -84,9 +85,9 @@ public class VoronoiUtil
 	 * 
 	 * @return a graph of sites.
 	 */
-	public static Map<Pnt, Set<Pnt>> createSiteGraph(Triangulation<?> t)
+	public static UndirectedGraph<Pnt> createSiteGraph(Triangulation<?> t)
 	{
-		Map<Pnt, Set<Pnt>> graph = new HashMap<>();
+		UndirectedGraph<Pnt> graph = new UndirectedGraph<>();
 
 		HashSet<Pnt> done = new HashSet<>(t.getInitialTriangle());
 		for (Triangle triangle : t) {
@@ -94,7 +95,7 @@ public class VoronoiUtil
 				if (done.contains(site)) {
 					continue;
 				}
-				graph.put(site, new HashSet<Pnt>());
+				graph.addNode(site);
 				done.add(site);
 			}
 		}
@@ -107,20 +108,18 @@ public class VoronoiUtil
 					continue;
 				}
 				done.add(site);
-				if (!graph.containsKey(site)) {
+				if (!graph.containsNode(site)) {
 					continue;
 				}
-				Set<Pnt> neighbors = new HashSet<>();
-				graph.put(site, neighbors);
 
 				List<Triangle> list = t.surroundingTriangles(site, triangle);
 				for (Triangle tri : list) {
 					for (Pnt s : tri) {
-						if (!graph.containsKey(s)) {
+						if (!graph.containsNode(s)) {
 							continue;
 						}
 						if (!s.equals(site)) {
-							neighbors.add(s);
+							graph.addEdge(site, s);
 						}
 					}
 				}

@@ -19,9 +19,10 @@ package de.topobyte.paulchew.delaunay;
 
 import java.io.Serializable;
 import java.util.Map;
-import java.util.Set;
 
 import com.vividsolutions.jts.geom.Geometry;
+
+import de.topobyte.adt.graph.UndirectedGraph;
 
 /**
  * This is a convenience wrapper for generating Voronoi Diagrams using the
@@ -123,7 +124,7 @@ public class VoronoiDiagram<T> implements Serializable
 	 * 
 	 * @return a graph mapping sites to sites.
 	 */
-	public Map<Pnt, Set<Pnt>> getSiteGraph()
+	public UndirectedGraph<Pnt> getSiteGraph()
 	{
 		return VoronoiUtil.createSiteGraph(t);
 	}
