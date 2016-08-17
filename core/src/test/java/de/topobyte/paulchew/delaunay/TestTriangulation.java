@@ -58,7 +58,7 @@ public class TestTriangulation
 		dt.delaunayPlace(new Pnt(0, 1), null);
 		System.out.println("After adding 3 points, we have a " + dt);
 		Triangle.moreInfo = true;
-		System.out.println("Triangles: " + dt.getGraph().nodeSet());
+		System.out.println("Triangles: " + dt.getGraph().getNodes());
 	}
 
 }

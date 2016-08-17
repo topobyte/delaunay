@@ -54,6 +54,8 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
+import de.topobyte.adt.graph.Graph;
+import de.topobyte.adt.graph.UndirectedGraph;
 import de.topobyte.jsi.GenericRTree;
 
 /**
@@ -89,7 +91,8 @@ public class Triangulation<T> extends AbstractSet<Triangle> implements
 	private Triangle initialTriangle;
 
 	private Triangle mostRecent = null; // Most recently "active" triangle
-	private Graph<Triangle> triGraph; // Holds triangles for navigation
+	private UndirectedGraph<Triangle> triGraph; // Holds triangles for
+												// navigation
 
 	/**
 	 * All sites must fall within the initial triangle.
@@ -100,9 +103,9 @@ public class Triangulation<T> extends AbstractSet<Triangle> implements
 	public Triangulation(Triangle triangle)
 	{
 		initialTriangle = triangle;
-		triGraph = new Graph<>();
+		triGraph = new UndirectedGraph<>();
 		pointToData = new HashMap<>();
-		triGraph.add(triangle);
+		triGraph.addNode(triangle);
 		mostRecent = triangle;
 
 		spidx.add(DelaunayUtil.triangleBox(triangle), triangle);
@@ -122,13 +125,13 @@ public class Triangulation<T> extends AbstractSet<Triangle> implements
 	@Override
 	public Iterator<Triangle> iterator()
 	{
-		return triGraph.nodeSet().iterator();
+		return triGraph.getNodes().iterator();
 	}
 
 	@Override
 	public int size()
 	{
-		return triGraph.nodeSet().size();
+		return triGraph.getNodes().size();
 	}
 
 	public Graph<Triangle> getGraph()
@@ -152,7 +155,7 @@ public class Triangulation<T> extends AbstractSet<Triangle> implements
 	@Override
 	public boolean contains(Object triangle)
 	{
-		return triGraph.nodeSet().contains(triangle);
+		return triGraph.getNodes().contains(triangle);
 	}
 
 	/**
@@ -170,7 +173,7 @@ public class Triangulation<T> extends AbstractSet<Triangle> implements
 	{
 		if (!triangle.contains(site))
 			throw new IllegalArgumentException("Bad vertex; not in triangle");
-		for (Triangle neighbor : triGraph.neighbors(triangle)) {
+		for (Triangle neighbor : triGraph.getEdgesOut(triangle)) {
 			if (!neighbor.contains(site))
 				return neighbor;
 		}
@@ -186,7 +189,7 @@ public class Triangulation<T> extends AbstractSet<Triangle> implements
 	 */
 	public Set<Triangle> neighbors(Triangle triangle)
 	{
-		return triGraph.neighbors(triangle);
+		return triGraph.getEdgesOut(triangle);
 	}
 
 	/**
@@ -320,7 +323,7 @@ public class Triangulation<T> extends AbstractSet<Triangle> implements
 				continue; // Site outside triangle => triangle not in cavity
 			encroached.add(current);
 			// Check the neighbors
-			for (Triangle neighbor : triGraph.neighbors(current)) {
+			for (Triangle neighbor : triGraph.getEdgesOut(current)) {
 				if (marked.contains(neighbor))
 					continue;
 				marked.add(neighbor);
@@ -361,7 +364,7 @@ public class Triangulation<T> extends AbstractSet<Triangle> implements
 
 		// Remove the cavity triangles from the triangulation
 		for (Triangle triangle : cavity) {
-			triGraph.remove(triangle);
+			triGraph.removeNode(triangle);
 			triangles.remove(triangle.hashCode());
 			spidx.delete(DelaunayUtil.triangleBox(triangle), triangle);
 		}
@@ -374,7 +377,7 @@ public class Triangulation<T> extends AbstractSet<Triangle> implements
 		for (Set<Pnt> vertices : boundary) {
 			vertices.add(site);
 			Triangle tri = new Triangle(vertices);
-			triGraph.add(tri);
+			triGraph.addNode(tri);
 			triangles.put(tri.hashCode(), tri);
 			spidx.add(DelaunayUtil.triangleBox(tri), tri);
 			newTriangles.add(tri);
@@ -385,7 +388,7 @@ public class Triangulation<T> extends AbstractSet<Triangle> implements
 		for (Triangle triangle : newTriangles)
 			for (Triangle other : theTriangles)
 				if (triangle.isNeighbor(other))
-					triGraph.add(triangle, other);
+					triGraph.addEdge(triangle, other);
 
 		// Return one of the new triangles
 		return newTriangles.iterator().next();
