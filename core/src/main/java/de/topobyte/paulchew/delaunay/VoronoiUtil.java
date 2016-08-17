@@ -87,22 +87,38 @@ public class VoronoiUtil
 	public static Map<Pnt, Set<Pnt>> createSiteGraph(Triangulation<?> t)
 	{
 		Map<Pnt, Set<Pnt>> graph = new HashMap<>();
+
 		HashSet<Pnt> done = new HashSet<>(t.getInitialTriangle());
 		for (Triangle triangle : t) {
 			for (Pnt site : triangle) {
-				if (done.contains(site))
+				if (done.contains(site)) {
 					continue;
+				}
+				graph.put(site, new HashSet<Pnt>());
 				done.add(site);
-				if (!graph.containsKey(site))
+			}
+		}
+
+		done = new HashSet<>(t.getInitialTriangle());
+
+		for (Triangle triangle : t) {
+			for (Pnt site : triangle) {
+				if (done.contains(site)) {
 					continue;
+				}
+				done.add(site);
+				if (!graph.containsKey(site)) {
+					continue;
+				}
 				Set<Pnt> neighbors = new HashSet<>();
 				graph.put(site, neighbors);
 
 				List<Triangle> list = t.surroundingTriangles(site, triangle);
 				for (Triangle tri : list) {
 					for (Pnt s : tri) {
-						if (!graph.containsKey(s))
+						if (!graph.containsKey(s)) {
 							continue;
+						}
 						if (!s.equals(site)) {
 							neighbors.add(s);
 						}
