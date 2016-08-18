@@ -17,7 +17,9 @@
 
 package de.topobyte.paulchew.delaunay;
 
-import java.util.ArrayList;
+import gnu.trove.list.TDoubleList;
+import gnu.trove.list.array.TDoubleArrayList;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -60,8 +62,8 @@ public class VoronoiUtil
 
 				T thing = t.getData().get(site);
 				List<Triangle> list = t.surroundingTriangles(site, triangle);
-				List<Double> xs = new ArrayList<>(list.size());
-				List<Double> ys = new ArrayList<>(list.size());
+				TDoubleList xs = new TDoubleArrayList(list.size());
+				TDoubleList ys = new TDoubleArrayList(list.size());
 				Pnt[] vertices = new Pnt[list.size()];
 				int i = 0;
 				for (Triangle tri : list) {
