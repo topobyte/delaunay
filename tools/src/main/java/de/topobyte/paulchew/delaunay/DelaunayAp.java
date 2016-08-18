@@ -184,10 +184,12 @@ public class DelaunayAp extends javax.swing.JApplet implements Runnable,
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		if (debug)
+		if (debug) {
 			System.out.println(((AbstractButton) e.getSource()).getText());
-		if (e.getSource() == clearButton)
+		}
+		if (e.getSource() == clearButton) {
 			delaunayPanel.clear();
+		}
 		delaunayPanel.repaint();
 	}
 
@@ -198,10 +200,11 @@ public class DelaunayAp extends javax.swing.JApplet implements Runnable,
 	public void mouseEntered(MouseEvent e)
 	{
 		currentSwitch = e.getComponent();
-		if (currentSwitch instanceof JLabel)
+		if (currentSwitch instanceof JLabel) {
 			delaunayPanel.repaint();
-		else
+		} else {
 			currentSwitch = null;
+		}
 	}
 
 	/**
@@ -211,8 +214,9 @@ public class DelaunayAp extends javax.swing.JApplet implements Runnable,
 	public void mouseExited(MouseEvent e)
 	{
 		currentSwitch = null;
-		if (e.getComponent() instanceof JLabel)
+		if (e.getComponent() instanceof JLabel) {
 			delaunayPanel.repaint();
+		}
 	}
 
 	/**
@@ -221,11 +225,13 @@ public class DelaunayAp extends javax.swing.JApplet implements Runnable,
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
-		if (e.getSource() != delaunayPanel)
+		if (e.getSource() != delaunayPanel) {
 			return;
+		}
 		Pnt point = new Pnt(e.getX(), e.getY());
-		if (debug)
+		if (debug) {
 			System.out.println("Click " + point);
+		}
 		delaunayPanel.addSite(point);
 		delaunayPanel.repaint();
 	}
@@ -344,8 +350,9 @@ class DelaunayPanel extends JPanel
 	 */
 	private Color getColor(Object item)
 	{
-		if (colorTable.containsKey(item))
+		if (colorTable.containsKey(item)) {
 			return colorTable.get(item);
+		}
 		Color color = new Color(Color.HSBtoRGB(random.nextFloat(), 1.0f, 1.0f));
 		colorTable.put(item, color);
 		return color;
@@ -433,34 +440,40 @@ class DelaunayPanel extends JPanel
 
 		// Flood the drawing area with a "background" color
 		Color temp = g.getColor();
-		if (!controller.isVoronoi())
+		if (!controller.isVoronoi()) {
 			g.setColor(delaunayColor);
-		else if (dt.contains(initialTriangle))
+		} else if (dt.contains(initialTriangle)) {
 			g.setColor(this.getBackground());
-		else
+		} else {
 			g.setColor(voronoiColor);
+		}
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		g.setColor(temp);
 
 		// If no colors then we can clear the color table
-		if (!controller.isColorful())
+		if (!controller.isColorful()) {
 			colorTable.clear();
+		}
 
 		// Draw the appropriate picture
-		if (controller.isVoronoi())
+		if (controller.isVoronoi()) {
 			drawAllVoronoi(controller.isColorful(), true);
-		else
+		} else {
 			drawAllDelaunay(controller.isColorful());
+		}
 
 		// Draw any extra info due to the mouse-entry switches
 		temp = g.getColor();
 		g.setColor(Color.white);
-		if (controller.showingCircles())
+		if (controller.showingCircles()) {
 			drawAllCircles();
-		if (controller.showingDelaunay())
+		}
+		if (controller.showingDelaunay()) {
 			drawAllDelaunay(false);
-		if (controller.showingVoronoi())
+		}
+		if (controller.showingVoronoi()) {
 			drawAllVoronoi(false, false);
+		}
 		g.setColor(temp);
 	}
 
@@ -490,20 +503,24 @@ class DelaunayPanel extends JPanel
 	{
 		// Keep track of sites done; no drawing for initial triangles sites
 		HashSet<Pnt> done = new HashSet<>(initialTriangle);
-		for (Triangle triangle : dt)
+		for (Triangle triangle : dt) {
 			for (Pnt site : triangle) {
-				if (done.contains(site))
+				if (done.contains(site)) {
 					continue;
+				}
 				done.add(site);
 				List<Triangle> list = dt.surroundingTriangles(site, triangle);
 				Pnt[] vertices = new Pnt[list.size()];
 				int i = 0;
-				for (Triangle tri : list)
+				for (Triangle tri : list) {
 					vertices[i++] = tri.getCircumcenter();
+				}
 				draw(vertices, withFill ? getColor(site) : null);
-				if (withSites)
+				if (withSites) {
 					draw(site);
+				}
 			}
+		}
 	}
 
 	/**
@@ -514,8 +531,9 @@ class DelaunayPanel extends JPanel
 		// Loop through all triangles of the DT
 		for (Triangle triangle : dt) {
 			// Skip circles involving the initial-triangle vertices
-			if (triangle.containsAny(initialTriangle))
+			if (triangle.containsAny(initialTriangle)) {
 				continue;
+			}
 			Pnt c = triangle.getCircumcenter();
 			double radius = c.subtract(triangle.get(0)).magnitude();
 			draw(c, radius, null);

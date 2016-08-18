@@ -69,8 +69,9 @@ public class TestRandom
 			formatter.printHelp(HELP_MESSAGE, options);
 			System.exit(1);
 		}
-		if (line == null)
+		if (line == null) {
 			return;
+		}
 
 		String argOutput = line.getOptionValue(OPTION_OUTPUT);
 		int npoints = 100;

@@ -93,15 +93,17 @@ public class Triangle extends ArraySet<Pnt>
 	{
 		super(collection);
 		idNumber = idGenerator++;
-		if (this.size() != 3)
+		if (this.size() != 3) {
 			throw new IllegalArgumentException("Triangle must have 3 vertices");
+		}
 	}
 
 	@Override
 	public String toString()
 	{
-		if (!moreInfo)
+		if (!moreInfo) {
 			return "Triangle" + idNumber;
+		}
 		return "Triangle" + idNumber + super.toString();
 	}
 
@@ -117,9 +119,11 @@ public class Triangle extends ArraySet<Pnt>
 	public Pnt getVertexButNot(Pnt... badVertices)
 	{
 		Collection<Pnt> bad = Arrays.asList(badVertices);
-		for (Pnt v : this)
-			if (!bad.contains(v))
+		for (Pnt v : this) {
+			if (!bad.contains(v)) {
 				return v;
+			}
+		}
 		throw new NoSuchElementException("No vertex found");
 	}
 
@@ -134,9 +138,11 @@ public class Triangle extends ArraySet<Pnt>
 	public boolean isNeighbor(Triangle triangle)
 	{
 		int count = 0;
-		for (Pnt vertex : this)
-			if (!triangle.contains(vertex))
+		for (Pnt vertex : this) {
+			if (!triangle.contains(vertex)) {
 				count++;
+			}
+		}
 		return count == 1;
 	}
 
@@ -152,8 +158,9 @@ public class Triangle extends ArraySet<Pnt>
 	public ArraySet<Pnt> facetOpposite(Pnt vertex)
 	{
 		ArraySet<Pnt> facet = new ArraySet<>(this);
-		if (!facet.remove(vertex))
+		if (!facet.remove(vertex)) {
 			throw new IllegalArgumentException("Vertex not in triangle");
+		}
 		return facet;
 	}
 
@@ -162,8 +169,9 @@ public class Triangle extends ArraySet<Pnt>
 	 */
 	public Pnt getCircumcenter()
 	{
-		if (circumcenter == null)
+		if (circumcenter == null) {
 			circumcenter = Pnt.circumcenter(this.toArray(new Pnt[0]));
+		}
 		return circumcenter;
 	}
 

@@ -58,14 +58,18 @@ public class DelaunayUtil
 		for (int i = 1; i < vertices.length; i++) {
 			double x = vertices[i].coord(0);
 			double y = vertices[i].coord(1);
-			if (x < x0)
+			if (x < x0) {
 				x0 = x;
-			if (x > x1)
+			}
+			if (x > x1) {
 				x1 = x;
-			if (y < y0)
+			}
+			if (y < y0) {
 				y0 = y;
-			if (y > y1)
+			}
+			if (y > y1) {
 				y1 = y;
+			}
 		}
 		return new Rectangle((float) x0, (float) y0, (float) x1, (float) y1);
 	}
@@ -90,14 +94,18 @@ public class DelaunayUtil
 		for (int i = 1; i <= 2; i++) {
 			double x = triangle.get(i).coord(0);
 			double y = triangle.get(i).coord(1);
-			if (x < x0)
+			if (x < x0) {
 				x0 = x;
-			if (x > x1)
+			}
+			if (x > x1) {
 				x1 = x;
-			if (y < y0)
+			}
+			if (y < y0) {
 				y0 = y;
-			if (y > y1)
+			}
+			if (y > y1) {
 				y1 = y;
+			}
 		}
 		return new Rectangle((float) x0, (float) y0, (float) x1, (float) y1);
 	}

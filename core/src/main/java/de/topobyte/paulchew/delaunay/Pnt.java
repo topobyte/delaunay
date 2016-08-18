@@ -80,11 +80,13 @@ public class Pnt implements Serializable
 	@Override
 	public String toString()
 	{
-		if (coordinates.length == 0)
+		if (coordinates.length == 0) {
 			return "Pnt()";
+		}
 		String result = "Pnt(" + coordinates[0];
-		for (int i = 1; i < coordinates.length; i++)
+		for (int i = 1; i < coordinates.length; i++) {
 			result = result + "," + coordinates[i];
+		}
 		result = result + ")";
 		return result;
 	}
@@ -92,14 +94,18 @@ public class Pnt implements Serializable
 	@Override
 	public boolean equals(Object other)
 	{
-		if (!(other instanceof Pnt))
+		if (!(other instanceof Pnt)) {
 			return false;
+		}
 		Pnt p = (Pnt) other;
-		if (this.coordinates.length != p.coordinates.length)
+		if (this.coordinates.length != p.coordinates.length) {
 			return false;
-		for (int i = 0; i < this.coordinates.length; i++)
-			if (this.coordinates[i] != p.coordinates[i])
+		}
+		for (int i = 0; i < this.coordinates.length; i++) {
+			if (this.coordinates[i] != p.coordinates[i]) {
 				return false;
+			}
+		}
 		return true;
 	}
 
@@ -148,8 +154,9 @@ public class Pnt implements Serializable
 	public int dimCheck(Pnt p)
 	{
 		int len = this.coordinates.length;
-		if (len != p.coordinates.length)
+		if (len != p.coordinates.length) {
 			throw new IllegalArgumentException("Dimension mismatch");
+		}
 		return len;
 	}
 
@@ -179,8 +186,9 @@ public class Pnt implements Serializable
 	{
 		int len = dimCheck(p);
 		double sum = 0;
-		for (int i = 0; i < len; i++)
+		for (int i = 0; i < len; i++) {
 			sum += this.coordinates[i] * p.coordinates[i];
+		}
 		return sum;
 	}
 
@@ -205,8 +213,9 @@ public class Pnt implements Serializable
 	{
 		int len = dimCheck(p);
 		double[] coords = new double[len];
-		for (int i = 0; i < len; i++)
+		for (int i = 0; i < len; i++) {
 			coords[i] = this.coordinates[i] - p.coordinates[i];
+		}
 		return new Pnt(coords);
 	}
 
@@ -221,8 +230,9 @@ public class Pnt implements Serializable
 	{
 		int len = dimCheck(p);
 		double[] coords = new double[len];
-		for (int i = 0; i < len; i++)
+		for (int i = 0; i < len; i++) {
 			coords[i] = this.coordinates[i] + p.coordinates[i];
+		}
 		return new Pnt(coords);
 	}
 
@@ -268,8 +278,9 @@ public class Pnt implements Serializable
 	public static String toString(Pnt[] matrix)
 	{
 		StringBuilder buf = new StringBuilder("{");
-		for (Pnt row : matrix)
+		for (Pnt row : matrix) {
 			buf.append(" " + row);
+		}
 		buf.append(" }");
 		return buf.toString();
 	}
@@ -286,11 +297,13 @@ public class Pnt implements Serializable
 	 */
 	public static double determinant(Pnt[] matrix)
 	{
-		if (matrix.length != matrix[0].dimension())
+		if (matrix.length != matrix[0].dimension()) {
 			throw new IllegalArgumentException("Matrix is not square");
+		}
 		boolean[] columns = new boolean[matrix.length];
-		for (int i = 0; i < matrix.length; i++)
+		for (int i = 0; i < matrix.length; i++) {
 			columns[i] = true;
+		}
 		try {
 			return determinant(matrix, 0, columns);
 		} catch (ArrayIndexOutOfBoundsException e) {
@@ -314,13 +327,15 @@ public class Pnt implements Serializable
 	 */
 	private static double determinant(Pnt[] matrix, int row, boolean[] columns)
 	{
-		if (row == matrix.length)
+		if (row == matrix.length) {
 			return 1;
+		}
 		double sum = 0;
 		int sign = 1;
 		for (int col = 0; col < columns.length; col++) {
-			if (!columns[col])
+			if (!columns[col]) {
 				continue;
+			}
 			columns[col] = false;
 			sum += sign * matrix[row].coordinates[col]
 					* determinant(matrix, row + 1, columns);
@@ -344,11 +359,13 @@ public class Pnt implements Serializable
 	public static Pnt cross(Pnt[] matrix)
 	{
 		int len = matrix.length + 1;
-		if (len != matrix[0].dimension())
+		if (len != matrix[0].dimension()) {
 			throw new IllegalArgumentException("Dimension mismatch");
+		}
 		boolean[] columns = new boolean[len];
-		for (int i = 0; i < len; i++)
+		for (int i = 0; i < len; i++) {
 			columns[i] = true;
+		}
 		double[] result = new double[len];
 		int sign = 1;
 		try {
@@ -376,11 +393,13 @@ public class Pnt implements Serializable
 	public static double content(Pnt[] simplex)
 	{
 		Pnt[] matrix = new Pnt[simplex.length];
-		for (int i = 0; i < matrix.length; i++)
+		for (int i = 0; i < matrix.length; i++) {
 			matrix[i] = simplex[i].extend(1);
+		}
 		int fact = 1;
-		for (int i = 1; i < matrix.length; i++)
+		for (int i = 1; i < matrix.length; i++) {
 			fact = fact * i;
+		}
 		return determinant(matrix) / fact;
 	}
 
@@ -414,21 +433,24 @@ public class Pnt implements Serializable
 		 * Analogous results occur in higher dimensions.
 		 */
 		int dim = simplex.length - 1;
-		if (this.dimension() != dim)
+		if (this.dimension() != dim) {
 			throw new IllegalArgumentException("Dimension mismatch");
+		}
 
 		/* Create and load the matrix */
 		Pnt[] matrix = new Pnt[dim + 1];
 		/* First row */
 		double[] coords = new double[dim + 2];
-		for (int j = 0; j < coords.length; j++)
+		for (int j = 0; j < coords.length; j++) {
 			coords[j] = 1;
+		}
 		matrix[0] = new Pnt(coords);
 		/* Other rows */
 		for (int i = 0; i < dim; i++) {
 			coords[0] = this.coordinates[i];
-			for (int j = 0; j < simplex.length; j++)
+			for (int j = 0; j < simplex.length; j++) {
 				coords[j + 1] = simplex[j].coordinates[i];
+			}
 			matrix[i + 1] = new Pnt(coords);
 		}
 
@@ -438,20 +460,23 @@ public class Pnt implements Serializable
 		int[] result = new int[dim + 1];
 		for (int i = 0; i < result.length; i++) {
 			double value = vector.coordinates[i + 1];
-			if (Math.abs(value) <= 1.0e-6 * Math.abs(content))
+			if (Math.abs(value) <= 1.0e-6 * Math.abs(content)) {
 				result[i] = 0;
-			else if (value < 0)
+			} else if (value < 0) {
 				result[i] = -1;
-			else
+			} else {
 				result[i] = 1;
+			}
 		}
 		if (content < 0) {
-			for (int i = 0; i < result.length; i++)
+			for (int i = 0; i < result.length; i++) {
 				result[i] = -result[i];
+			}
 		}
 		if (content == 0) {
-			for (int i = 0; i < result.length; i++)
+			for (int i = 0; i < result.length; i++) {
 				result[i] = Math.abs(result[i]);
+			}
 		}
 		return result;
 	}
@@ -467,8 +492,9 @@ public class Pnt implements Serializable
 	{
 		int[] result = this.relation(simplex);
 		for (int i = 0; i < result.length; i++) {
-			if (result[i] > 0)
+			if (result[i] > 0) {
 				return simplex[i];
+			}
 		}
 		return null;
 	}
@@ -485,10 +511,11 @@ public class Pnt implements Serializable
 		int[] result = this.relation(simplex);
 		Pnt witness = null;
 		for (int i = 0; i < result.length; i++) {
-			if (result[i] == 0)
+			if (result[i] == 0) {
 				witness = simplex[i];
-			else if (result[i] > 0)
+			} else if (result[i] > 0) {
 				return null;
+			}
 		}
 		return witness;
 	}
@@ -503,9 +530,11 @@ public class Pnt implements Serializable
 	public boolean isInside(Pnt[] simplex)
 	{
 		int[] result = this.relation(simplex);
-		for (int r : result)
-			if (r >= 0)
+		for (int r : result) {
+			if (r >= 0) {
 				return false;
+			}
+		}
 		return true;
 	}
 
@@ -519,13 +548,15 @@ public class Pnt implements Serializable
 	public int vsCircumcircle(Pnt[] simplex)
 	{
 		Pnt[] matrix = new Pnt[simplex.length + 1];
-		for (int i = 0; i < simplex.length; i++)
+		for (int i = 0; i < simplex.length; i++) {
 			matrix[i] = simplex[i].extend(1, simplex[i].dot(simplex[i]));
+		}
 		matrix[simplex.length] = this.extend(1, this.dot(this));
 		double d = determinant(matrix);
 		int result = (d < 0) ? -1 : ((d > 0) ? +1 : 0);
-		if (content(simplex) < 0)
+		if (content(simplex) < 0) {
 			result = -result;
+		}
 		return result;
 	}
 
@@ -539,16 +570,19 @@ public class Pnt implements Serializable
 	public static Pnt circumcenter(Pnt[] simplex)
 	{
 		int dim = simplex[0].dimension();
-		if (simplex.length - 1 != dim)
+		if (simplex.length - 1 != dim) {
 			throw new IllegalArgumentException("Dimension mismatch");
+		}
 		Pnt[] matrix = new Pnt[dim];
-		for (int i = 0; i < dim; i++)
+		for (int i = 0; i < dim; i++) {
 			matrix[i] = simplex[i].bisector(simplex[i + 1]);
+		}
 		Pnt hCenter = cross(matrix); // Center in homogeneous coordinates
 		double last = hCenter.coordinates[dim];
 		double[] result = new double[dim];
-		for (int i = 0; i < dim; i++)
+		for (int i = 0; i < dim; i++) {
 			result[i] = hCenter.coordinates[i] / last;
+		}
 		return new Pnt(result);
 	}
 

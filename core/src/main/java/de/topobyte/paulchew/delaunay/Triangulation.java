@@ -171,11 +171,13 @@ public class Triangulation<T> extends AbstractSet<Triangle> implements
 	 */
 	public Triangle neighborOpposite(Pnt site, Triangle triangle)
 	{
-		if (!triangle.contains(site))
+		if (!triangle.contains(site)) {
 			throw new IllegalArgumentException("Bad vertex; not in triangle");
+		}
 		for (Triangle neighbor : triGraph.getEdgesOut(triangle)) {
-			if (!neighbor.contains(site))
+			if (!neighbor.contains(site)) {
 				return neighbor;
+			}
 		}
 		return null;
 	}
@@ -205,8 +207,9 @@ public class Triangulation<T> extends AbstractSet<Triangle> implements
 	 */
 	public List<Triangle> surroundingTriangles(Pnt site, Triangle triangle)
 	{
-		if (!triangle.contains(site))
+		if (!triangle.contains(site)) {
 			throw new IllegalArgumentException("Site not in triangle");
+		}
 		List<Triangle> list = new ArrayList<>();
 		Triangle start = triangle;
 		Triangle current = triangle;
@@ -216,8 +219,9 @@ public class Triangulation<T> extends AbstractSet<Triangle> implements
 			Triangle previous = current;
 			current = this.neighborOpposite(guide, current); // Next triangle
 			guide = previous.getVertexButNot(site, guide); // Update guide
-			if (current == start)
+			if (current == start) {
 				break;
+			}
 		}
 		return list;
 	}
@@ -232,8 +236,9 @@ public class Triangulation<T> extends AbstractSet<Triangle> implements
 	public Triangle locate(final Pnt point)
 	{
 		Triangle triangle = mostRecent;
-		if (!this.contains(triangle))
+		if (!this.contains(triangle)) {
 			triangle = null;
+		}
 
 		final Set<Triangle> founds = new HashSet<>();
 		spidx.intersects(DelaunayUtil.pntBox(point),
@@ -262,8 +267,9 @@ public class Triangulation<T> extends AbstractSet<Triangle> implements
 		}
 		for (Triangle t : founds) {
 			Set<Triangle> cavity = getCavity(point, t);
-			if (cavity.size() != 0)
+			if (cavity.size() != 0) {
 				return t;
+			}
 		}
 
 		return null;
@@ -291,8 +297,9 @@ public class Triangulation<T> extends AbstractSet<Triangle> implements
 			System.out.println(site.stringRepresentation());
 			throw new IllegalArgumentException("No containing triangle");
 		}
-		if (triangle.contains(site))
+		if (triangle.contains(site)) {
 			return;
+		}
 
 		// Determine the cavity and update the triangulation
 		Set<Triangle> cavity = getCavity(site, triangle);
@@ -319,13 +326,15 @@ public class Triangulation<T> extends AbstractSet<Triangle> implements
 		marked.add(triangle);
 		while (!toBeChecked.isEmpty()) {
 			Triangle current = toBeChecked.remove();
-			if (site.vsCircumcircle(current.toArray(new Pnt[0])) == 1)
+			if (site.vsCircumcircle(current.toArray(new Pnt[0])) == 1) {
 				continue; // Site outside triangle => triangle not in cavity
+			}
 			encroached.add(current);
 			// Check the neighbors
 			for (Triangle neighbor : triGraph.getEdgesOut(current)) {
-				if (marked.contains(neighbor))
+				if (marked.contains(neighbor)) {
 					continue;
+				}
 				marked.add(neighbor);
 				toBeChecked.add(neighbor);
 			}
@@ -354,10 +363,11 @@ public class Triangulation<T> extends AbstractSet<Triangle> implements
 			theTriangles.addAll(neighbors(triangle));
 			for (Pnt vertex : triangle) {
 				Set<Pnt> facet = triangle.facetOpposite(vertex);
-				if (boundary.contains(facet))
+				if (boundary.contains(facet)) {
 					boundary.remove(facet);
-				else
+				} else {
 					boundary.add(facet);
+				}
 			}
 		}
 		theTriangles.removeAll(cavity); // Adj triangles only
@@ -385,10 +395,13 @@ public class Triangulation<T> extends AbstractSet<Triangle> implements
 
 		// Update the graph links for each new triangle
 		theTriangles.addAll(newTriangles); // Adj triangle + new triangles
-		for (Triangle triangle : newTriangles)
-			for (Triangle other : theTriangles)
-				if (triangle.isNeighbor(other))
+		for (Triangle triangle : newTriangles) {
+			for (Triangle other : theTriangles) {
+				if (triangle.isNeighbor(other)) {
 					triGraph.addEdge(triangle, other);
+				}
+			}
+		}
 
 		// Return one of the new triangles
 		return newTriangles.iterator().next();

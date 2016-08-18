@@ -91,9 +91,11 @@ public class ArraySet<E> extends AbstractSet<E> implements Serializable
 	public ArraySet(Collection<? extends E> collection)
 	{
 		items = new ArrayList<>(collection.size());
-		for (E item : collection)
-			if (!items.contains(item))
+		for (E item : collection) {
+			if (!items.contains(item)) {
 				items.add(item);
+			}
+		}
 	}
 
 	/**
@@ -119,17 +121,20 @@ public class ArraySet<E> extends AbstractSet<E> implements Serializable
 	 */
 	public boolean containsAny(Collection<?> collection)
 	{
-		for (Object item : collection)
-			if (this.contains(item))
+		for (Object item : collection) {
+			if (this.contains(item)) {
 				return true;
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public boolean add(E item)
 	{
-		if (items.contains(item))
+		if (items.contains(item)) {
 			return false;
+		}
 		return items.add(item);
 	}
 
