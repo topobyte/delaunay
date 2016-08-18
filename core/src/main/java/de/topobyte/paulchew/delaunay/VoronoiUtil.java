@@ -46,6 +46,9 @@ public class VoronoiUtil
 	/**
 	 * Create a mapping from site data objects to Voronoi cells.
 	 * 
+	 * @param t
+	 *            the Delaunay Triangulation
+	 * 
 	 * @return the dual Voronoi cells.
 	 */
 	public static <T> Map<T, Geometry> getVoronoiCells(Triangulation<T> t)
@@ -103,6 +106,9 @@ public class VoronoiUtil
 	/**
 	 * Create a neighbor graph of the inserted sites of a triangulation. Sites
 	 * are considered neighbors if their Voronoi cells share a common edge.
+	 * 
+	 * @param t
+	 *            the Delaunay Triangulation
 	 * 
 	 * @return a graph of sites.
 	 */
