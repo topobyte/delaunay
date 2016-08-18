@@ -61,24 +61,43 @@ public class VoronoiUtil
 				done.add(site);
 
 				T thing = t.getData().get(site);
-				List<Triangle> list = t.surroundingTriangles(site, triangle);
-				TDoubleList xs = new TDoubleArrayList(list.size());
-				TDoubleList ys = new TDoubleArrayList(list.size());
-				Pnt[] vertices = new Pnt[list.size()];
-				int i = 0;
-				for (Triangle tri : list) {
-					Pnt ccenter = tri.getCircumcenter();
-					vertices[i++] = ccenter;
-					xs.add(ccenter.coord(0));
-					ys.add(ccenter.coord(1));
-				}
-				LinearRing ring = JtsHelper.toLinearRing(xs, ys, false);
-				Polygon polygon = PolygonHelper.polygonFromLinearRing(ring,
-						factory);
+				Polygon polygon = getVoronoiCell(site, triangle, t, factory);
 				map.put(thing, polygon);
 			}
 		}
 		return map;
+	}
+
+	/**
+	 * Create a Voronoi cell polygon for the specified site.
+	 * 
+	 * @param site
+	 *            the site that we want the cell polygon for
+	 * @param triangle
+	 *            a "starting" triangle that has site as a vertex
+	 * @param t
+	 *            the Delaunay Triangulation
+	 * @param factory
+	 *            a GeometryFactory to create geometries
+	 * @return the cell polygon
+	 */
+	public static <T> Polygon getVoronoiCell(Pnt site, Triangle triangle,
+			Triangulation<T> t, GeometryFactory factory)
+	{
+		List<Triangle> list = t.surroundingTriangles(site, triangle);
+		TDoubleList xs = new TDoubleArrayList(list.size());
+		TDoubleList ys = new TDoubleArrayList(list.size());
+		Pnt[] vertices = new Pnt[list.size()];
+		int i = 0;
+		for (Triangle tri : list) {
+			Pnt ccenter = tri.getCircumcenter();
+			vertices[i++] = ccenter;
+			xs.add(ccenter.coord(0));
+			ys.add(ccenter.coord(1));
+		}
+		LinearRing ring = JtsHelper.toLinearRing(xs, ys, false);
+		Polygon polygon = PolygonHelper.polygonFromLinearRing(ring, factory);
+		return polygon;
 	}
 
 	/**
