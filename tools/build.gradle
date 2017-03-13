@@ -1,6 +1,6 @@
 dependencies {
     compile project(':delaunay')
-    compile 'de.topobyte:commons-cli-helper:0.0.3'
+    compile 'de.topobyte:commons-cli-helper:0.0.5'
     compile 'de.topobyte:jts2awt:0.0.1'
 }
 
