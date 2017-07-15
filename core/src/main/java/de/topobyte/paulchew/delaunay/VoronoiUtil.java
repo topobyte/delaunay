@@ -17,15 +17,14 @@
 
 package de.topobyte.paulchew.delaunay;
 
-import gnu.trove.list.TDoubleList;
-import gnu.trove.list.array.TDoubleArrayList;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.slimjars.dist.gnu.trove.list.TDoubleList;
+import com.slimjars.dist.gnu.trove.list.array.TDoubleArrayList;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;

@@ -40,8 +40,6 @@
 
 package de.topobyte.paulchew.delaunay;
 
-import gnu.trove.procedure.TObjectProcedure;
-
 import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.ArrayList;
@@ -53,6 +51,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+
+import com.slimjars.dist.gnu.trove.procedure.TObjectProcedure;
 
 import de.topobyte.adt.graph.Graph;
 import de.topobyte.adt.graph.UndirectedGraph;
