@@ -20,7 +20,7 @@ package de.topobyte.paulchew.delaunay;
 import java.io.Serializable;
 import java.util.Map;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 import de.topobyte.adt.graph.UndirectedGraph;
 

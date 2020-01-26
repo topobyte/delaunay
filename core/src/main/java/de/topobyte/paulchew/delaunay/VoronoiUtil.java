@@ -23,12 +23,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Polygon;
+
 import com.slimjars.dist.gnu.trove.list.TDoubleList;
 import com.slimjars.dist.gnu.trove.list.array.TDoubleArrayList;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
 
 import de.topobyte.adt.graph.UndirectedGraph;
 import de.topobyte.jts.utils.JtsHelper;

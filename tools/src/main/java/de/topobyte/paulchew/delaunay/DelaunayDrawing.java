@@ -31,8 +31,8 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LinearRing;
 
 import de.topobyte.jgs.transform.IdentityCoordinateTransformer;
 import de.topobyte.jts.utils.JtsHelper;
