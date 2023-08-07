@@ -81,8 +81,8 @@ import javax.swing.SwingUtilities;
  *
  */
 @SuppressWarnings("serial")
-public class DelaunayAp extends javax.swing.JApplet implements Runnable,
-		ActionListener, MouseListener
+public class DelaunayAp extends JPanel
+		implements Runnable, ActionListener, MouseListener
 {
 
 	private boolean debug = false; // Used for debugging
@@ -120,7 +120,6 @@ public class DelaunayAp extends javax.swing.JApplet implements Runnable,
 	 * Initialize the applet. As recommended, the actual use of Swing components
 	 * takes place in the event-dispatching thread.
 	 */
-	@Override
 	public void init()
 	{
 		try {
